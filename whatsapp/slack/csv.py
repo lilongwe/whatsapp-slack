@@ -9,8 +9,9 @@ from argparse import ArgumentParser
 from typing import TextIO, Set, Dict, Union
 
 # Static variables
-console_prefix:str = "$ "
-format_string:str = '{1}{0} "{2}"{0} "@{3}"{0} "{4}"'
+CONSOLE_PREFIX:str = "$ "
+FORMAT_STRING:str = '{1}{0} "{2}"{0} "@{3}"{0} "{4}"'
+DATE_FORMAT:str = "[%d/%m/%Y, %H:%M:%S]"
 
 
 def main():
@@ -40,15 +41,15 @@ def main():
 	input_file:TextIO = args.input
 	output_file:TextIO = open("Slack Import "+args.input.name, 'w') if args.output is None else args.output
 	
-	print("{0}input filename:     '{1}'".format(console_prefix, input_file.name))
-	print("{0}output filename:    '{1}'".format(console_prefix, output_file.name))
-	print("{0}slack channel name: '{1}'".format(console_prefix, channel_name))
-	print("{0}delimiter: '{1}'".format(console_prefix, delimiter))
-	print("{0}usernames: '{1}'".format(console_prefix, args.username))
+	print("{0}input filename:     '{1}'".format(CONSOLE_PREFIX, input_file.name))
+	print("{0}output filename:    '{1}'".format(CONSOLE_PREFIX, output_file.name))
+	print("{0}slack channel name: '{1}'".format(CONSOLE_PREFIX, channel_name))
+	print("{0}delimiter: '{1}'".format(CONSOLE_PREFIX, delimiter))
+	print("{0}usernames: '{1}'".format(CONSOLE_PREFIX, args.username))
 
 	generateFile(input_file, output_file, delimiter, channel_name, args.username)
 	
-	print("\n  🌖 {0}Done. Enjoy!\n".format(console_prefix))
+	print("\n  🌖 {0}Done. Enjoy!\n".format(CONSOLE_PREFIX))
 
 	closeFiles({input_file,output_file})
 
@@ -60,7 +61,7 @@ def closeFiles(allFiles: Set[TextIO]):
 
 def generateFile(input_file: TextIO, output_file: TextIO, delimiter: str, channel_name: str, change_username: bool):
 
-	print("{0}Reading input file...".format(console_prefix))
+	print("{0}Reading input file...".format(CONSOLE_PREFIX))
 	input_lines:list = input_file.readlines()
 	usernames_mapping:Dict[str,str] = {}
 	
@@ -78,13 +79,13 @@ def generateFile(input_file: TextIO, output_file: TextIO, delimiter: str, channe
 			print("Line Number: " , my_line_number)
 
 			try:
-				dt = datetime.datetime.strptime(line[:22].strip(), "[%d/%m/%Y, %H:%M:%S]")
+				dt = datetime.datetime.strptime(line[:22].strip(), DATE_FORMAT)
 			except ValueError:
 				# We cannot find a date, it's a continuation of a line, most probably...
 				output_elements["content"] += "\n"+line.strip()
 			else:
 				if output_elements.get("content", None) is not None:
-					new_line:str = format_string.format(delimiter, int(output_elements["date"].timestamp()), channel_name, output_elements["username"], output_elements["content"])
+					new_line:str = FORMAT_STRING.format(delimiter, int(output_elements["date"].timestamp()), channel_name, output_elements["username"], output_elements["content"])
 					print(new_line)
 					outfile.write(new_line+"\n")
 					output_elements = {}
@@ -105,7 +106,7 @@ def generateFile(input_file: TextIO, output_file: TextIO, delimiter: str, channe
 						output_username:str = ""
 
 						if change_username:
-							output_username = input("\n{0}Unknown username '{1}'. Enter corresponding Slack.com username (<Enter>=identical): ".format(console_prefix, input_username))
+							output_username = input("\n{0}Unknown username '{1}'. Enter corresponding Slack.com username (<Enter>=identical): ".format(CONSOLE_PREFIX, input_username))
 
 						if len(output_username.strip()) > 0:
 							usernames_mapping[input_username] = output_username.strip()
@@ -119,7 +120,7 @@ def generateFile(input_file: TextIO, output_file: TextIO, delimiter: str, channe
 
 		# We need this to get the last line...			
 		if output_elements.get("content", None) is not None:
-			new_line:str = format_string.format(delimiter, int(output_elements["date"].timestamp()), channel_name, output_elements["username"], output_elements["content"])
+			new_line:str = FORMAT_STRING.format(delimiter, int(output_elements["date"].timestamp()), channel_name, output_elements["username"], output_elements["content"])
 			print(new_line)
 			outfile.write(new_line+"\n")
 			output_elements = {}
