@@ -9,14 +9,12 @@ def test_generateFile():
 
     input_file = open(path + "/whatsapp.txt", "r")
     output_file = open(path + "/slack.csv", "r+")
+    original_file = open(path + "/slack_original.csv", "r")
 
     generateFile(input_file, output_file, "|", "test-channel", False)
 
     output_hash = hashlib.md5(output_file.read().encode('utf-8')).hexdigest()
-    original_hash = hashlib.md5(open(path + "/slack_original.csv", "r").read().encode('utf-8')).hexdigest()
+    original_hash = hashlib.md5(original_file.read().encode('utf-8')).hexdigest()
 
     assert output_hash == original_hash
 
-
-def test_decrement():
-    assert 4 == 4
