@@ -1,10 +1,10 @@
 {
 	"folders": [
 		{
-			"path": "whatsapp-slack"
+			"path": "tests"
 		},
 		{
-			"path": "whatsapp-slack_tests"
+			"path": "whatsapp"
 		}
 	]
 }

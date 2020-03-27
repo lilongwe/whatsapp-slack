@@ -36,6 +36,11 @@ def main():
 	print("{0}output filename:    '{1}'".format(console_prefix, output_file.name))
 	print("{0}slack channel name: '{1}'".format(console_prefix, channel_name))
 	print("{0}delimiter: '{1}'".format(console_prefix, delimiter))
+
+	print("\n  🌖 {0}Done. Enjoy!\n".format(console_prefix))
+
+
+def generateFile():
 	
 	print("{0}Reading input file...".format(console_prefix))
 	input_lines = input_file.readlines()
@@ -97,8 +102,6 @@ def main():
 			outfile.write(new_line+"\n")
 			output_elements = {}
 
-			
-	print("\n  🌖 {0}Done. Enjoy!\n".format(console_prefix))
 
 if __name__ == "__main__":
 	main()
