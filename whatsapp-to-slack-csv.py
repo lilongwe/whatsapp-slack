@@ -11,6 +11,7 @@ def main():
 	description = "Transform exported whatsapp discussions into ready-for-import slack.com threads."
 	delimiter = ","
 
+	# Format for writting slack csv file
 	format_string = '{1}{0} "{2}"{0} "@{3}"{0} "{4}"'
 	
 	parser = argparse.ArgumentParser(description=description)
