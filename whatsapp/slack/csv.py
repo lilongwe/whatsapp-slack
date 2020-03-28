@@ -16,7 +16,7 @@ DATE_FORMAT:str = "[%d/%m/%Y, %H:%M:%S]"
 
 def main():
 	channel_name:str = "#whatsapp"
-	description:str = "Transform exported whatsapp discussions into ready-for-import slack.com threads."
+	description:str = "Transform exported whatsapp discussions into ready-for-import slack.com threads as a csv file."
 	delimiter:str = ","
 
 	# Format for writting slack csv file
