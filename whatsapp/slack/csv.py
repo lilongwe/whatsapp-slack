@@ -98,7 +98,7 @@ def generateFile(input_file: TextIO, output_file: TextIO, delimiter: str, channe
 				for quote in ['"', '‟', '″', '˝', '“']:
 					output_line = output_line.replace(quote, '\"')
 
-				# Oh, by the way, look for a username. The presence of a username followed by a colon is the only fkag we can use.
+				# Oh, by the way, look for a username. The presence of a username followed by a colon is the only flag we can use.
 				if line[23:].count(':') > 0: 
 					input_username:str = line[23:].split(':')[0].strip()
 					if input_username not in usernames_mapping.keys():
