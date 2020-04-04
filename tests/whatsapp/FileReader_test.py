@@ -1,6 +1,8 @@
-from whatsapp.slack import FileReader
+from whatsapp import FileReader
 import pathlib, hashlib
 from pytest import raises
+from typing import Union, Dict
+from datetime import datetime
 
 def test_checkCreateFileReaderWithObject():
 
@@ -56,3 +58,17 @@ def test_readLine():
 		count += 1
 
 	assert 19 == count
+
+def test_checkTypesAndCountOfKeys():
+
+	path = str(pathlib.Path(__file__).parent.absolute()) + "/whatsapp.txt"
+
+	fileReader:FileReader = FileReader.FileReader(path)
+
+	line:Dict[str,Union[str,datetime]] = fileReader.read()
+
+	assert type(line[fileReader.CONTENT]) == str
+	assert type(line[fileReader.DATE]) == datetime
+	assert type(line[fileReader.USERNAME]) == str
+	
+	assert len(line.keys()) == 3

@@ -3,7 +3,7 @@ from typing import Union, Dict
 import pathlib, os
 from datetime import datetime
 
-class FileReader:
+class FileReader(object):
 
 	CONSOLE_PREFIX:str = "$ "
 	FORMAT_STRING:str = '{1}{0} "{2}"{0} "@{3}"{0} "{4}"'
@@ -12,6 +12,8 @@ class FileReader:
 	CONTENT:str = "content"
 	DATE:str = "date"
 	USERNAME:str = "username"
+
+	contents = ""
 
 	def __init__(self, fileHandle):
 
