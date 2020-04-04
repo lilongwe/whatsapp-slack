@@ -6,7 +6,7 @@ def test_generateFile():
 
     path = str(pathlib.Path(__file__).parent.absolute())
 
-    input_file = open(path + "/whatsapp.txt", "r")
+    input_file = open(path + "/../whatsapp.txt", "r")
     output_file = open(path + "/slack.csv", "r+")
     original_file = open(path + "/slack_original.csv", "r")
 
@@ -25,7 +25,7 @@ def test_closeFiles():
 
     path = str(pathlib.Path(__file__).parent.absolute())
 
-    input_file = open(path + "/whatsapp.txt", "r")
+    input_file = open(path + "/../whatsapp.txt", "r")
     output_file = open(path + "/slack.csv", "r+")
     original_file = open(path + "/slack_original.csv", "r")
 
