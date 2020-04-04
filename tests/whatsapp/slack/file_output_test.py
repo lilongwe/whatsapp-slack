@@ -1,6 +1,5 @@
 from whatsapp.slack.csv import generateFile, closeFiles
-import hashlib
-import pathlib
+import pathlib, hashlib
 
 
 def test_generateFile():
