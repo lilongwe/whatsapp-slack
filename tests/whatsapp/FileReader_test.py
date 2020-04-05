@@ -87,3 +87,15 @@ def test_outputValues():
 	assert line[fileReader.CONTENT] == "Not bad, I’m living the \"dream\" with a really handsome man"
 	assert line[fileReader.USERNAME] == "Elena Rosa Brunet"
 	assert line[fileReader.DATE].strftime(fileReader.DATE_FORMAT) == "[26/03/2020, 10:47:47]"
+
+def test_multilineContent():
+	path = str(pathlib.Path(__file__).parent.absolute()) + "/whatsapp.txt"
+
+	fileReader:FileReader = FileReader.FileReader(path)
+
+	line:Dict[str,Union[str,datetime]] = None
+
+	for i in range(13):
+		line = fileReader.read()
+
+	assert line[fileReader.CONTENT].count("\n") == 3
