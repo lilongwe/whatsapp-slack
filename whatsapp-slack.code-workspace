@@ -5,6 +5,9 @@
 		},
 		{
 			"path": "whatsapp"
+		},
+		{
+			"path": "slack"
 		}
 	]
 }
