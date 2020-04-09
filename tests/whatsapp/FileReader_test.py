@@ -49,11 +49,12 @@ def test_readLine():
 	fileReader:FileReader = FileReader.FileReader(path)
 
 	line = fileReader.read()
+	line.getContent()
 	count = 1
 	keepReading = True
 
 	while keepReading:
-		keepReading = bool(line)
+		keepReading = line.hasContent()
 		line = fileReader.read()
 		count += 1
 
@@ -67,12 +68,10 @@ def test_checkTypesAndCountOfKeys():
 
 	line:Dict[str,Union[str,datetime]] = fileReader.read()
 
-	assert type(line[fileReader.CONTENT]) == str
-	assert type(line[fileReader.DATE]) == datetime
-	assert type(line[fileReader.USERNAME]) == str
+	assert type(line.getContent()) == str
+	assert type(line.getDate()) == datetime
+	assert type(line.getUsername()) == str
 	
-	assert len(line.keys()) == 3
-
 def test_outputValues():
 
 	path = str(pathlib.Path(__file__).parent.absolute()) + "/whatsapp.txt"
@@ -84,9 +83,9 @@ def test_outputValues():
 	for i in range(4):
 		line = fileReader.read()
 
-	assert line[fileReader.CONTENT] == "Not bad, I’m living the \"dream\" with a really handsome man"
-	assert line[fileReader.USERNAME] == "Elena Rosa Brunet"
-	assert line[fileReader.DATE].strftime(fileReader.DATE_FORMAT) == "[26/03/2020, 10:47:47]"
+	assert line.getContent() == "Not bad, I’m living the \"dream\" with a really handsome man"
+	assert line.getUsername() == "Elena Rosa Brunet"
+	assert line.getDate().strftime(fileReader.DATE_FORMAT) == "[26/03/2020, 10:47:47]"
 
 def test_multilineContent():
 	path = str(pathlib.Path(__file__).parent.absolute()) + "/whatsapp.txt"
@@ -98,4 +97,4 @@ def test_multilineContent():
 	for i in range(13):
 		line = fileReader.read()
 
-	assert line[fileReader.CONTENT].count("\n") == 3
+	assert line.getContent().count("\n") == 3
