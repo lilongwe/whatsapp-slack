@@ -64,9 +64,9 @@ class FileReader(object):
 				output_elements[self.USERNAME] = self._getUsername(line)
 				output_elements[self.CONTENT] = self._getContents(line, output_elements["username"])
 		
-		line = Line(output_elements[self.DATE], output_elements[self.USERNAME], output_elements[self.CONTENT]) if bool(output_elements) else Line()
+		new_line:Line = Line(output_elements[self.DATE], output_elements[self.USERNAME], output_elements[self.CONTENT]) if bool(output_elements) else Line()
 
-		return line
+		return new_line
 
 
 	def _getDate(self, line:str, format:str = DATE_FORMAT) -> datetime:
@@ -96,22 +96,3 @@ class FileReader(object):
 		content:str - None
 
 		return line[23:].replace(username+":", "").strip()
-
-
-#	class Line(object):
-
-#		def __init__(self, outer, line:Dict[str,Union[str,datetime]]):
-#			self._outer = outer
-#			self._line = line
-
-#		def getDate(self) -> datetime:
-#			return self._line[self._outer.DATE]
-#
-#		def getContent(self) -> str:
-#			return self._line[self._outer.CONTENT]
-#
-#		def getUsername(self) -> str:
-#			return self._line[self._outer.USERNAME]
-#
-#		def hasContent(self) -> bool:
-#			return bool(self._line)
