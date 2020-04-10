@@ -27,6 +27,21 @@ def test_createFileWriter():
 
 	assert output_hash == fixture_hash
 
+def test_createFileWriterDefaults():
+
+	path = str(pathlib.Path(__file__).parent.absolute())
+
+	output_file = StringIO()
+	fixture_value = '1555110000, "whatsapp", "@username", "content"\n'
+
+	fileWriter:FileWriter = FileWriter(output_file)
+
+	fileWriter.write(Line(datetime(2019, 4, 13), "username", "content"))
+
+	output_value = output_file.getvalue()
+
+	assert output_value == fixture_value
+
 def test_fileNotInWriteMode():
 
 	path = str(pathlib.Path(__file__).parent.absolute())

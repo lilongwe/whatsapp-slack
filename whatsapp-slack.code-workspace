@@ -8,6 +8,9 @@
 		},
 		{
 			"path": "slack"
+		},
+		{
+			"path": "utilities"
 		}
 	]
 }
