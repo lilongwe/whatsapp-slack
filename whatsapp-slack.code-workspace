@@ -11,6 +11,12 @@
 		},
 		{
 			"path": "utilities"
+		},
+		{
+			"path": "writer"
+		},
+		{
+			"path": "reader"
 		}
 	]
 }

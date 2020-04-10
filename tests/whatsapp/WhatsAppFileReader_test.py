@@ -1,4 +1,4 @@
-from whatsapp.FileReader import FileReader
+from whatsapp.WhatsAppFileReader import FileReader
 from whatsapp.Line import Line
 import pathlib, hashlib
 from pytest import raises

@@ -1,4 +1,4 @@
-from slack.FileWriter import FileWriter
+from slack.CVSFileWriter import FileWriter
 from whatsapp.Line import Line
 from datetime import datetime
 import pathlib, hashlib
