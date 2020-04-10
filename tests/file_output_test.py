@@ -1,4 +1,4 @@
-from slack.csv import generateFile, closeFiles
+from csv import generateFile, closeFiles
 import pathlib, hashlib
 
 

@@ -1,5 +1,5 @@
-from whatsapp.WhatsAppFileReader import FileReader
-from whatsapp.Line import Line
+from reader.WhatsAppFileReader import WhatsAppFileReader
+from reader.Line import Line
 import pathlib, hashlib
 from pytest import raises
 from datetime import datetime
@@ -10,7 +10,7 @@ def test_checkCreateFileReaderWithObject():
 	
 	input_file = open(path + "/whatsapp.txt", "rb")
 
-	fileReader:FileReader = FileReader(input_file)
+	fileReader:WhatsAppFileReader = WhatsAppFileReader(input_file)
 
 	assert fileReader.file() == input_file, "files are not equal"
 
@@ -18,7 +18,7 @@ def test_checkCreateFileReaderWithString():
 
 	path = str(pathlib.Path(__file__).parent.absolute()) + "/whatsapp.txt"
 
-	fileReader:FileReader = FileReader(path)
+	fileReader:WhatsAppFileReader = WhatsAppFileReader(path)
 
 	input_file = open(path, "rb")
 
@@ -35,18 +35,18 @@ def test_checkCreateFileReaderWithString():
 def test_checkParameterException():
 
 	with raises(TypeError):
-		fileReader:FileReader = FileReader(1)
+		fileReader:WhatsAppFileReader = WhatsAppFileReader(1)
 
 def test_checkFileNotFoundException():
 
 	with raises(FileNotFoundError):
-		fileReader:FileReader = FileReader("")
+		fileReader:WhatsAppFileReader = WhatsAppFileReader("")
 
 def test_readLine():
 
 	path = str(pathlib.Path(__file__).parent.absolute()) + "/whatsapp.txt"
 
-	fileReader:FileReader = FileReader(path)
+	fileReader:WhatsAppFileReader = WhatsAppFileReader(path)
 
 	line:Line = fileReader.read()
 
@@ -67,7 +67,7 @@ def test_checkTypesAndCountOfKeys():
 
 	path = str(pathlib.Path(__file__).parent.absolute()) + "/whatsapp.txt"
 
-	fileReader:FileReader = FileReader(path)
+	fileReader:WhatsAppFileReader = WhatsAppFileReader(path)
 
 	line:Line = fileReader.read()
 
@@ -79,7 +79,7 @@ def test_outputValues():
 
 	path = str(pathlib.Path(__file__).parent.absolute()) + "/whatsapp.txt"
 
-	fileReader:FileReader = FileReader(path)
+	fileReader:WhatsAppFileReader = WhatsAppFileReader(path)
 
 	line:Line = None
 
@@ -93,7 +93,7 @@ def test_outputValues():
 def test_multilineContent():
 	path = str(pathlib.Path(__file__).parent.absolute()) + "/whatsapp.txt"
 
-	fileReader:FileReader = FileReader(path)
+	fileReader:WhatsAppFileReader = WhatsAppFileReader(path)
 
 	line:Line = None
 

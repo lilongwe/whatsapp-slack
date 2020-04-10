@@ -1,10 +1,10 @@
 from io import IOBase, TextIOWrapper, StringIO
 from typing import Union, Dict
 from datetime import datetime
-from whatsapp.Line import Line
+from reader.Line import Line
 from utilities.ParameterValidator import ParameterValidator
 
-class FileWriter(object):
+class CVSFileWriter(object):
 
 	FORMAT_STRING:str = '{1}{0} "{2}"{0} "@{3}"{0} "{4}"'
 

@@ -1,4 +1,4 @@
-from whatsapp.Line import Line
+from reader.Line import Line
 from pytest import raises
 from datetime import datetime
 

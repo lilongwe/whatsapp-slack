@@ -1,5 +1,5 @@
-from slack.CVSFileWriter import FileWriter
-from whatsapp.Line import Line
+from writer.CVSFileWriter import CVSFileWriter
+from reader.Line import Line
 from datetime import datetime
 import pathlib, hashlib
 from pytest import raises
@@ -13,7 +13,7 @@ def test_createFileWriter():
 	output_file = StringIO()
 	fixture_file = open(path + "/slack_test_fixture.csv", "rb")
 
-	fileWriter:FileWriter = FileWriter(output_file, delimiter="!", channel="test")
+	fileWriter:CVSFileWriter = CVSFileWriter(output_file, delimiter="!", channel="test")
 
 	fileWriter.write(Line(datetime(2019, 4, 13), "username", "content"))
 
@@ -34,7 +34,7 @@ def test_createFileWriterDefaults():
 	output_file = StringIO()
 	fixture_value = '1555110000, "whatsapp", "@username", "content"\n'
 
-	fileWriter:FileWriter = FileWriter(output_file)
+	fileWriter:CVSFileWriter = CVSFileWriter(output_file)
 
 	fileWriter.write(Line(datetime(2019, 4, 13), "username", "content"))
 
@@ -49,4 +49,4 @@ def test_fileNotInWriteMode():
 	output_file = open(path + "/slack_test_fixture.csv", "r")
 
 	with raises(IOError):
-		fileWriter:FileWriter = FileWriter(output_file)
+		fileWriter:CVSFileWriter = CVSFileWriter(output_file)

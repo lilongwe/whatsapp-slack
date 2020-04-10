@@ -2,10 +2,10 @@ from io import BufferedReader
 from typing import Union, Dict
 import pathlib, os
 from datetime import datetime
-from whatsapp.Line import Line
+from reader.Line import Line
 
 
-class FileReader(object):
+class WhatsAppFileReader(object):
 
 	CONSOLE_PREFIX:str = "$ "
 	FORMAT_STRING:str = '{1}{0} "{2}"{0} "@{3}"{0} "{4}"'
