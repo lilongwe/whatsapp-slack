@@ -1,8 +1,10 @@
 from reader.WhatsAppFileReader import WhatsAppFileReader
+from writer.CVSFileWriter import CVSFileWriter
 from reader.Line import Line
 import pathlib, hashlib
 from pytest import raises
 from datetime import datetime
+from io import StringIO
 
 def test_checkCreateFileReaderWithObject():
 
@@ -101,3 +103,28 @@ def test_multilineContent():
 		line = fileReader.read()
 
 	assert line.getContent().count("\n") == 3
+
+def test_processWithContent():
+
+	path = str(pathlib.Path(__file__).parent.absolute())
+	
+	whatsappFilePath = path + "/whatsapp.txt"
+	csvFile = open(path + "/../utilities/slack_original.csv", "r")
+
+	fileReader:WhatsAppFileReader = WhatsAppFileReader(whatsappFilePath)
+	
+	contents:StringIO = StringIO()
+
+	fileWriter:CVSFileWriter = CVSFileWriter(contents, channel="test-channel", delimiter="|")
+
+	fileReader.process(fileWriter)
+
+	hash_reader = hashlib.md5()
+	hash_reader.update(csvFile.read().encode("utf-8"))
+	existing_file_hash = hash_reader.hexdigest()
+
+	hash_reader = hashlib.md5()
+	hash_reader.update(contents.getvalue().encode("utf-8"))
+	output_file_hash = hash_reader.hexdigest()
+
+	assert existing_file_hash == output_file_hash

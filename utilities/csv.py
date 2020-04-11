@@ -66,7 +66,6 @@ def generateFile(input_file: TextIO, output_file: TextIO, delimiter: str, channe
 	usernames_mapping:Dict[str,str] = {}
 	
 	# Looping through raw lines to group combine lines
-	output_line:str = None
 	output_elements:Dict[str,Union[str,datetime]] = {}
 	my_line_number:int = 0
     
@@ -91,12 +90,12 @@ def generateFile(input_file: TextIO, output_file: TextIO, delimiter: str, channe
 					output_elements = {}
 	
 				# We can find a date at start of line, it's a new line
-				output_line = line.strip()
+				line = line.strip()
 				output_elements["date"] = dt
 				
 				# Make sure to change all double quotes to standard ones
 				for quote in ['"', '‟', '″', '˝', '“']:
-					output_line = output_line.replace(quote, '\"')
+					line = line.replace(quote, '""')
 
 				# Oh, by the way, look for a username. The presence of a username followed by a colon is the only flag we can use.
 				if line[23:].count(':') > 0: 

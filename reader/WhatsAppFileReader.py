@@ -3,6 +3,7 @@ from typing import Union, Dict
 import pathlib, os
 from datetime import datetime
 from reader.Line import Line
+from writer.Writer import Writer
 
 
 class WhatsAppFileReader(object):
@@ -67,6 +68,17 @@ class WhatsAppFileReader(object):
 		new_line:Line = Line(output_elements[self.DATE], output_elements[self.USERNAME], output_elements[self.CONTENT]) if bool(output_elements) else Line()
 
 		return new_line
+
+	def process(self, writer:Writer):
+
+		line:Line = self.read()
+		keepReading = True
+
+		while keepReading:
+			keepReading = line.hasContent()
+			if keepReading:
+				writer.write(line)
+			line = self.read()
 
 
 	def _getDate(self, line:str, format:str = DATE_FORMAT) -> datetime:

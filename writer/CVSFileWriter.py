@@ -46,25 +46,6 @@ class CVSFileWriter(object):
 						int(line.getDate().timestamp()),
 						self._channel,
 						line.getUsername(),
-						line.getContent())
+						line.getContent().replace('"','""'))
 
 		self._file.write(new_line+"\n")
-
-
-"""
-import pathlib
-import sys
-
-print(__name__)
-
-path = str(pathlib.Path(__file__).parent.absolute())
-print(path)
-fileWriter:FileWriter = FileWriter(path + "FileWriter.py", delimiter=[2], overrideUsername=10)
-print(fileWriter._overrideUsername)
-
-fileWriter.setOverrideUsername(True)
-
-print(fileWriter._overrideUsername)
-
-print(pathlib.Path(__file__).home())
-"""
