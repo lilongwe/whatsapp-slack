@@ -3,8 +3,9 @@ from typing import Union, Dict
 from datetime import datetime
 from reader.Line import Line
 from utilities.ParameterValidator import ParameterValidator
+from writer.Writer import Writer
 
-class CSVFileWriter(object):
+class CSVFileWriter(Writer):
 
 	FORMAT_STRING:str = '{1}{0} "{2}"{0} "@{3}"{0} "{4}"'
 

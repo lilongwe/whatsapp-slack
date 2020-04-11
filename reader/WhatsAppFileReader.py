@@ -4,9 +4,10 @@ import pathlib, os
 from datetime import datetime
 from reader.Line import Line
 from writer.Writer import Writer
+from reader.Reader import Reader
 
 
-class WhatsAppFileReader(object):
+class WhatsAppFileReader(Reader):
 
 	CONSOLE_PREFIX:str = "$ "
 	FORMAT_STRING:str = '{1}{0} "{2}"{0} "@{3}"{0} "{4}"'
