@@ -1,5 +1,5 @@
 from reader.WhatsAppFileReader import WhatsAppFileReader
-from writer.CVSFileWriter import CVSFileWriter
+from writer.CSVFileWriter import CSVFileWriter
 from reader.Line import Line
 import pathlib, hashlib
 from pytest import raises
@@ -115,7 +115,7 @@ def test_processWithContent():
 	
 	contents:StringIO = StringIO()
 
-	fileWriter:CVSFileWriter = CVSFileWriter(contents, channel="test-channel", delimiter="|")
+	fileWriter:CSVFileWriter = CSVFileWriter(contents, channel="test-channel", delimiter="|")
 
 	fileReader.process(fileWriter)
 
