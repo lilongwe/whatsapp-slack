@@ -1,4 +1,5 @@
 from reader.Line import Line
+from writer.Writer import Writer
 
 class Reader(object):
 
@@ -8,6 +9,11 @@ class Reader(object):
 		"""
 
 	def read(self) -> Line:
+		"""
+		nothing here
+		"""
+
+	def process(self, writer:Writer):
 		"""
 		nothing here
 		"""
