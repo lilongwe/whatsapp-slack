@@ -41,11 +41,11 @@ class CSVFileWriter(object):
 		self._overrideUsername = bool(override)
 
 	def write(self, line:Line):
+		if line.hasContent():
+			new_line:str = self.FORMAT_STRING.format(self._delimiter,
+							int(line.getDate().timestamp()),
+							self._channel,
+							line.getUsername(),
+							line.getContent().replace('"','""'))
 
-		new_line:str = self.FORMAT_STRING.format(self._delimiter,
-						int(line.getDate().timestamp()),
-						self._channel,
-						line.getUsername(),
-						line.getContent().replace('"','""'))
-
-		self._file.write(new_line+"\n")
+			self._file.write(new_line+"\n")
