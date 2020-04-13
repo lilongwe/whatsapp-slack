@@ -3,7 +3,7 @@ from typing import Union, Dict
 from datetime import datetime
 from utilities.Line import Line
 from utilities.ParameterValidator import ParameterValidator
-from writer.Writer import Writer
+from utilities.Writer import Writer
 
 class CSVFileWriter(Writer):
 

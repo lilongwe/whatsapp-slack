@@ -3,8 +3,8 @@ from typing import Union, Dict
 import pathlib, os
 from datetime import datetime
 from utilities.Line import Line
-from writer.Writer import Writer
-from reader.Reader import Reader
+from utilities.Writer import Writer
+from utilities.Reader import Reader
 
 
 class WhatsAppFileReader(Reader):

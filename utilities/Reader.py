@@ -1,6 +1,6 @@
 import abc
 from utilities.Line import Line
-from writer.Writer import Writer
+from utilities.Writer import Writer
 
 class Reader(abc.ABC):
 
