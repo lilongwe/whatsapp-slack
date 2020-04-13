@@ -1,19 +1,13 @@
+import abc
 from utilities.Line import Line
 from writer.Writer import Writer
 
-class Reader(object):
+class Reader(abc.ABC):
 
-	def __init__(self):
-		"""
-		nothing here
-		"""
-
+	@abc.abstractmethod
 	def read(self) -> Line:
-		"""
-		nothing here
-		"""
-
+		pass
+	
+	@abc.abstractmethod
 	def process(self, writer:Writer):
-		"""
-		nothing here
-		"""
+		pass

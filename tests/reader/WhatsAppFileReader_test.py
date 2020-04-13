@@ -12,7 +12,7 @@ def test_checkCreateFileReaderWithObject():
 	
 	input_file = open(path + "/whatsapp.txt", "rb")
 
-	fileReader:WhatsAppFileReader = WhatsAppFileReader(input_file)
+	fileReader:Reader = WhatsAppFileReader(input_file)
 
 	assert fileReader.file() == input_file, "files are not equal"
 
@@ -20,7 +20,7 @@ def test_checkCreateFileReaderWithString():
 
 	path = str(pathlib.Path(__file__).parent.absolute()) + "/whatsapp.txt"
 
-	fileReader:WhatsAppFileReader = WhatsAppFileReader(path)
+	fileReader:Reader = WhatsAppFileReader(path)
 
 	input_file = open(path, "rb")
 
@@ -37,18 +37,18 @@ def test_checkCreateFileReaderWithString():
 def test_checkParameterException():
 
 	with raises(TypeError):
-		fileReader:WhatsAppFileReader = WhatsAppFileReader(1)
+		fileReader:Reader = WhatsAppFileReader(1)
 
 def test_checkFileNotFoundException():
 
 	with raises(FileNotFoundError):
-		fileReader:WhatsAppFileReader = WhatsAppFileReader("")
+		fileReader:Reader = WhatsAppFileReader("")
 
 def test_readLine():
 
 	path = str(pathlib.Path(__file__).parent.absolute()) + "/whatsapp.txt"
 
-	fileReader:WhatsAppFileReader = WhatsAppFileReader(path)
+	fileReader:Reader = WhatsAppFileReader(path)
 
 	line:Line = fileReader.read()
 
@@ -69,7 +69,7 @@ def test_checkTypesAndCountOfKeys():
 
 	path = str(pathlib.Path(__file__).parent.absolute()) + "/whatsapp.txt"
 
-	fileReader:WhatsAppFileReader = WhatsAppFileReader(path)
+	fileReader:Reader = WhatsAppFileReader(path)
 
 	line:Line = fileReader.read()
 
@@ -81,7 +81,7 @@ def test_outputValues():
 
 	path = str(pathlib.Path(__file__).parent.absolute()) + "/whatsapp.txt"
 
-	fileReader:WhatsAppFileReader = WhatsAppFileReader(path)
+	fileReader:Reader = WhatsAppFileReader(path)
 
 	line:Line = None
 
@@ -95,7 +95,7 @@ def test_outputValues():
 def test_multilineContent():
 	path = str(pathlib.Path(__file__).parent.absolute()) + "/whatsapp.txt"
 
-	fileReader:WhatsAppFileReader = WhatsAppFileReader(path)
+	fileReader:Reader = WhatsAppFileReader(path)
 
 	line:Line = None
 
@@ -111,11 +111,11 @@ def test_processWithContent():
 	whatsappFilePath = path + "/whatsapp.txt"
 	csvFile = open(path + "/../utilities/slack_original.csv", "r")
 
-	fileReader:WhatsAppFileReader = WhatsAppFileReader(whatsappFilePath)
+	fileReader:Reader = WhatsAppFileReader(whatsappFilePath)
 	
 	contents:StringIO = StringIO()
 
-	fileWriter:CSVFileWriter = CSVFileWriter(contents, channel="test-channel", delimiter="|")
+	fileWriter:Writer = CSVFileWriter(contents, channel="test-channel", delimiter="|")
 
 	fileReader.process(fileWriter)
 

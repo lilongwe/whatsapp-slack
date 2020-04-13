@@ -1,13 +1,12 @@
+import abc
 from utilities.Line import Line
 
-class Writer(object):
+class Writer(abc.ABC):
 
-	def __init__(self):
-		"""
-		nothing here
-		"""
-
+	@abc.abstractmethod
 	def write(self, line:Line):
-		"""
-		nothing here
-		"""
+		pass
+
+	@abc.abstractmethod
+	def setOverrideUsername(self, override:bool):
+		pass
