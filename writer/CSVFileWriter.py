@@ -8,6 +8,7 @@ from writer.Writer import Writer
 class CSVFileWriter(Writer):
 
 	FORMAT_STRING:str = '{1}{0} "{2}"{0} "@{3}"{0} "{4}"'
+	CONSOLE_PREFIX:str = "$ "
 
 	def __init__(self, 
 				fileHandle:Union[StringIO,TextIOWrapper,str], 
@@ -37,16 +38,39 @@ class CSVFileWriter(Writer):
 		self._overrideUsername = overrideUsername if (overrideUsername is not None 
 									and type(overrideUsername) == bool) else False
 
+		self._usernames_mappings:Dict[str,str] = {}
+
 
 	def setOverrideUsername(self, override:bool):
 		self._overrideUsername = bool(override)
 
 	def write(self, line:Line):
 		if line.hasContent():
+
+			username = line.getUsername()
+
+			if self._overrideUsername:
+				username = self._setUsername(username)
+
 			new_line:str = self.FORMAT_STRING.format(self._delimiter,
 							int(line.getDate().timestamp()),
 							self._channel,
-							line.getUsername(),
+							username,
 							line.getContent().replace('"','""'))
 
 			self._file.write(new_line+"\n")
+
+	def _setUsername(self, username:str):
+
+		if username not in self._usernames_mappings.keys():
+
+			output_username:str = ""
+
+			output_username = input("\n{0}Unknown username '{1}'. Enter corresponding Slack.com username (<Enter>=identical): ".format(self.CONSOLE_PREFIX, username))
+
+			if len(output_username.strip()) > 0:
+				usernames_mappings[username] = output_username.strip()
+			else:
+				usernames_mappings[username] = username
+		
+		return usernames_mappings.get(username, None)
