@@ -1,11 +1,11 @@
 from utilities.ParameterValidator import ParameterValidator
 import pytest
 
-def test_validateStringWithValue():
+@pytest.mark.parametrize("parameter", ["string", "\n string \r"])
+def test_validateStringWithValue(parameter):
 
 	validator:ParameterValidator = ParameterValidator()
 
-	parameter:str = "string"
 	validated:str = validator.validateString(parameter)
 
 	assert parameter == validated
@@ -35,12 +35,12 @@ def test_validateStringWithDefault(parameter, default, expected):
 
 	assert expected == validated
 
-def test_validateIntegerWithValue():
+@pytest.mark.parametrize("parameter", [10, -50])
+def test_validateIntegerWithValue(parameter):
 
 	validator:ParameterValidator = ParameterValidator()
 
-	parameter:int = 10
-	validated:str = validator.validateInteger(parameter)
+	validated:int = validator.validateInteger(parameter)
 
 	assert parameter == validated
 
