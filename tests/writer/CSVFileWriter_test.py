@@ -1,5 +1,5 @@
 from writer.CSVFileWriter import CSVFileWriter
-from reader.Line import Line
+from utilities.Line import Line
 from datetime import datetime
 import pathlib, hashlib
 from pytest import raises
