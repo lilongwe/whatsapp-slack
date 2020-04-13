@@ -1,4 +1,4 @@
-from reader.Line import Line
+from utilities.Line import Line
 from writer.Writer import Writer
 
 class Reader(object):

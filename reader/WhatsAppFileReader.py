@@ -2,7 +2,7 @@ from io import BufferedReader
 from typing import Union, Dict
 import pathlib, os
 from datetime import datetime
-from reader.Line import Line
+from utilities.Line import Line
 from writer.Writer import Writer
 from reader.Reader import Reader
 

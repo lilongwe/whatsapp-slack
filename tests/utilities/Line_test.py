@@ -1,4 +1,4 @@
-from reader.Line import Line
+from utilities.Line import Line
 from pytest import raises
 from datetime import datetime
 import pytest
