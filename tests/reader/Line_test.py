@@ -29,6 +29,15 @@ def test_createNoneLine():
 	assert line.getUsername() == None
 	assert line.hasContent() == False
 
+def test_createLineWithNoParameters():
+
+	line:Line = Line()
+
+	assert line.getDate() == None
+	assert line.getContent() == None
+	assert line.getUsername() == None
+	assert line.hasContent() == False
+
 def test_createLineWithWrongTypes():
 
 	username:int = 10
