@@ -7,12 +7,17 @@ from io import StringIO
 import pytest
 
 
-def test_createFileWriter():
+@pytest.fixture
+def absolute_path():
+	return str(pathlib.Path(__file__).parent.absolute())
 
-	path = str(pathlib.Path(__file__).parent.absolute())
+@pytest.fixture
+def fixture_csv_file(absolute_path):
+	return open(absolute_path + "/slack_test_fixture.csv", "rb")
+
+def test_createFileWriter(fixture_csv_file):
 
 	output_file = StringIO()
-	fixture_file = open(path + "/slack_test_fixture.csv", "rb")
 
 	fileWriter:CSVFileWriter = CSVFileWriter(output_file, delimiter="!", channel="test", overrideUsername="True")
 
@@ -23,18 +28,15 @@ def test_createFileWriter():
 	output_hash = hash_reader.hexdigest()
 
 	hash_reader = hashlib.md5()
-	hash_reader.update(fixture_file.read())
+	hash_reader.update(fixture_csv_file.read())
 	fixture_hash = hash_reader.hexdigest()
 
 	assert output_hash == fixture_hash
 
 @pytest.mark.xfail(raises=OSError,reason="Uses input which cannot be used when pytest is capturing output")
-def test_createFileWriterOverrideUsername():
-
-	path = str(pathlib.Path(__file__).parent.absolute())
+def test_createFileWriterOverrideUsername(fixture_csv_file):
 
 	output_file = StringIO()
-	fixture_file = open(path + "/slack_test_fixture.csv", "rb")
 
 	fileWriter:CSVFileWriter = CSVFileWriter(output_file, delimiter="!", channel="test", overrideUsername=True)
 
@@ -45,14 +47,12 @@ def test_createFileWriterOverrideUsername():
 	output_hash = hash_reader.hexdigest()
 
 	hash_reader = hashlib.md5()
-	hash_reader.update(fixture_file.read())
+	hash_reader.update(fixture_csv_file.read())
 	fixture_hash = hash_reader.hexdigest()
 
 	assert output_hash == fixture_hash
 
 def test_createFileWriterDefaults():
-
-	path = str(pathlib.Path(__file__).parent.absolute())
 
 	output_file = StringIO()
 	fixture_value = '1555110000, "whatsapp", "@username", "content"\n'
@@ -65,11 +65,9 @@ def test_createFileWriterDefaults():
 
 	assert output_value == fixture_value
 
-def test_fileNotInWriteMode():
+def test_fileNotInWriteMode(fixture_csv_file):
 
-	path = str(pathlib.Path(__file__).parent.absolute())
-
-	output_file = open(path + "/slack_test_fixture.csv", "r")
+	output_file = open(fixture_csv_file.name, "r")
 
 	with raises(IOError):
 		fileWriter:CSVFileWriter = CSVFileWriter(output_file)

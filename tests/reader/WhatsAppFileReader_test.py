@@ -5,24 +5,31 @@ import pathlib, hashlib
 from pytest import raises
 from datetime import datetime
 from io import StringIO
+import pytest
 
-def test_checkCreateFileReaderWithObject():
+@pytest.fixture
+def absolute_path():
+	return str(pathlib.Path(__file__).parent.absolute())
 
-	path = str(pathlib.Path(__file__).parent.absolute())
-	
-	input_file = open(path + "/whatsapp.txt", "rb")
+@pytest.fixture
+def whatsapp_file_path(absolute_path):
+	return absolute_path + "/whatsapp.txt"
 
-	fileReader:Reader = WhatsAppFileReader(input_file)
+@pytest.fixture
+def whatsapp_file(whatsapp_file_path):
+	return open(whatsapp_file_path, "rb")
 
-	assert fileReader.file() == input_file, "files are not equal"
+def test_checkCreateFileReaderWithObject(whatsapp_file):
 
-def test_checkCreateFileReaderWithString():
+	fileReader:Reader = WhatsAppFileReader(whatsapp_file)
 
-	path = str(pathlib.Path(__file__).parent.absolute()) + "/whatsapp.txt"
+	assert fileReader.file() == whatsapp_file, "files are not equal"
 
-	fileReader:Reader = WhatsAppFileReader(path)
+def test_checkCreateFileReaderWithString(whatsapp_file_path):
 
-	input_file = open(path, "rb")
+	fileReader:Reader = WhatsAppFileReader(whatsapp_file_path)
+
+	input_file = open(whatsapp_file_path, "rb")
 
 	hash_reader = hashlib.md5()
 	hash_reader.update(fileReader.file().read())
@@ -44,11 +51,9 @@ def test_checkFileNotFoundException():
 	with raises(FileNotFoundError):
 		fileReader:Reader = WhatsAppFileReader("")
 
-def test_readLine():
+def test_readLine(whatsapp_file_path):
 
-	path = str(pathlib.Path(__file__).parent.absolute()) + "/whatsapp.txt"
-
-	fileReader:Reader = WhatsAppFileReader(path)
+	fileReader:Reader = WhatsAppFileReader(whatsapp_file_path)
 
 	line:Line = fileReader.read()
 
@@ -65,11 +70,9 @@ def test_readLine():
 
 	assert 19 == count
 
-def test_checkTypesAndCountOfKeys():
+def test_checkTypesAndCountOfKeys(whatsapp_file_path):
 
-	path = str(pathlib.Path(__file__).parent.absolute()) + "/whatsapp.txt"
-
-	fileReader:Reader = WhatsAppFileReader(path)
+	fileReader:Reader = WhatsAppFileReader(whatsapp_file_path)
 
 	line:Line = fileReader.read()
 
@@ -77,11 +80,9 @@ def test_checkTypesAndCountOfKeys():
 	assert type(line.getDate()) == datetime
 	assert type(line.getUsername()) == str
 	
-def test_outputValues():
+def test_outputValues(whatsapp_file_path):
 
-	path = str(pathlib.Path(__file__).parent.absolute()) + "/whatsapp.txt"
-
-	fileReader:Reader = WhatsAppFileReader(path)
+	fileReader:Reader = WhatsAppFileReader(whatsapp_file_path)
 
 	line:Line = None
 
@@ -92,10 +93,9 @@ def test_outputValues():
 	assert line.getUsername() == "Elena Rosa Brunet"
 	assert line.getDate().strftime(fileReader.DATE_FORMAT) == "[26/03/2020, 10:47:47]"
 
-def test_multilineContent():
-	path = str(pathlib.Path(__file__).parent.absolute()) + "/whatsapp.txt"
+def test_multilineContent(whatsapp_file_path):
 
-	fileReader:Reader = WhatsAppFileReader(path)
+	fileReader:Reader = WhatsAppFileReader(whatsapp_file_path)
 
 	line:Line = None
 
@@ -104,14 +104,11 @@ def test_multilineContent():
 
 	assert line.getContent().count("\n") == 3
 
-def test_processWithContent():
-
-	path = str(pathlib.Path(__file__).parent.absolute())
+def test_processWithContent(absolute_path, whatsapp_file_path):
 	
-	whatsappFilePath = path + "/whatsapp.txt"
-	csvFile = open(path + "/../utilities/slack_original.csv", "r")
+	csvFile = open(absolute_path + "/../utilities/slack_original.csv", "r")
 
-	fileReader:Reader = WhatsAppFileReader(whatsappFilePath)
+	fileReader:Reader = WhatsAppFileReader(whatsapp_file_path)
 	
 	contents:StringIO = StringIO()
 
