@@ -1,11 +1,6 @@
 
 class ParameterValidator(object):
 
-	def __init__(self):
-		"""
-		Nothing to see here
-		"""
-
 	def validateString(self, string:str, default:str=None) -> str:
 				
 		string = string if (string is not None 
@@ -14,7 +9,7 @@ class ParameterValidator(object):
 
 		return string
 
-	def validateInteger(self, integer:int, default:int=None) -> str:
+	def validateInteger(self, integer:int, default:int=None) -> int:
 		
 		try:
 			integer = integer if (integer is not None 
