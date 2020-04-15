@@ -45,7 +45,7 @@ class CSVFileWriter(Writer):
 		self._overrideUsername = bool(override)
 
 	def write(self, line:Line):
-		if line.hasContent():
+		if line is not None and line.hasContent():
 
 			username = line.getUsername()
 

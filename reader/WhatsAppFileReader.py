@@ -73,13 +73,14 @@ class WhatsAppFileReader(Reader):
 	def process(self, writer:Writer):
 
 		line:Line = self.read()
-		keepReading = True
 
-		while keepReading:
-			keepReading = line.hasContent()
-			if keepReading:
-				writer.write(line)
+		while True:
+			writer.write(line)
+
 			line = self.read()
+
+			if line.hasContent() is False:
+				break
 
 
 	def _getDate(self, line:str, format:str = DATE_FORMAT) -> datetime:
