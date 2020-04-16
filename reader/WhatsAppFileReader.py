@@ -1,10 +1,12 @@
-from io import BufferedReader
-from typing import Union, Dict
-import pathlib, os
+import os
+import pathlib
 from datetime import datetime
+from io import BufferedReader
+from typing import Dict, Union
+
 from utilities.Line import Line
-from utilities.Writer import Writer
 from utilities.Reader import Reader
+from utilities.Writer import Writer
 
 
 class WhatsAppFileReader(Reader):
@@ -12,11 +14,14 @@ class WhatsAppFileReader(Reader):
 	CONSOLE_PREFIX:str = "$ "
 	FORMAT_STRING:str = '{1}{0} "{2}"{0} "@{3}"{0} "{4}"'
 	DATE_FORMAT:str = "[%d/%m/%Y, %H:%M:%S]"
+	LINE_DATE_INDEX = 22
+	LINE_USERNAME_INDEX = 23
 
 	CONTENT:str = "content"
 	DATE:str = "date"
 	USERNAME:str = "username"
 
+	
 	def __init__(self, fileHandle:Union[BufferedReader,str]):
 
 		try:
@@ -31,11 +36,10 @@ class WhatsAppFileReader(Reader):
 		except TypeError as error:
 			raise error
 
-		_seek = 0
-
 
 	def file(self) -> BufferedReader:
 		return self._file
+
 
 	def read(self) -> Line:
 		
@@ -70,6 +74,7 @@ class WhatsAppFileReader(Reader):
 
 		return new_line
 
+
 	def process(self, writer:Writer):
 
 		line:Line = self.read()
@@ -84,7 +89,8 @@ class WhatsAppFileReader(Reader):
 
 
 	def _getDate(self, line:str, format:str = DATE_FORMAT) -> datetime:
-		return datetime.strptime(line[:22], format)
+		return datetime.strptime(line[:self.LINE_DATE_INDEX], format)
+
 
 	def _normaliseQuotes(self, line:str) -> str:
 		# Make sure to change all double quotes to standard ones
@@ -93,20 +99,22 @@ class WhatsAppFileReader(Reader):
 
 		return line
 
+
 	def _getUsername(self, line:str) -> str:
 		
 		username:str = None
 		
-		if line[23:].count(':') > 0: 
-			username = line[23:].split(':')[0].strip()
+		if line[self.LINE_USERNAME_INDEX:].count(':') > 0: 
+			username = line[self.LINE_USERNAME_INDEX:].split(':')[0].strip()
 
 		if username is None or len(username.strip()) == 0:
 			raise NameError("No username found")
 
 		return username
 
+
 	def _getContents(self, line:str, username:str) -> str:
 		
 		content:str - None
 
-		return line[23:].replace(username+":", "").strip()
+		return line[self.LINE_USERNAME_INDEX:].replace(username+":", "").strip()

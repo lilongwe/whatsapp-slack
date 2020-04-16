@@ -1,5 +1,7 @@
-from utilities.ParameterValidator import ParameterValidator
 import pytest
+
+from utilities.ParameterValidator import ParameterValidator
+
 
 @pytest.mark.parametrize("parameter", ["string", "\n string \r"])
 def test_validateStringWithValue(parameter):

@@ -1,5 +1,7 @@
 import abc
+
 from utilities.Line import Line
+
 
 class Writer(abc.ABC):
 

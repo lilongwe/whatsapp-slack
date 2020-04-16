@@ -1,11 +1,15 @@
-from reader.WhatsAppFileReader import WhatsAppFileReader
-from writer.CSVFileWriter import CSVFileWriter
-from utilities.Line import Line
-import pathlib, hashlib
-from pytest import raises
+import hashlib
+import pathlib
 from datetime import datetime
 from io import StringIO
+
 import pytest
+from pytest import raises
+
+from reader.WhatsAppFileReader import WhatsAppFileReader
+from utilities.Line import Line
+from writer.CSVFileWriter import CSVFileWriter
+
 
 @pytest.fixture
 def absolute_path():

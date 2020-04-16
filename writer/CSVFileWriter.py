@@ -1,9 +1,11 @@
-from io import IOBase, TextIOWrapper, StringIO
-from typing import Union, Dict
 from datetime import datetime
+from io import IOBase, StringIO, TextIOWrapper
+from typing import Dict, Union
+
 from utilities.Line import Line
 from utilities.ParameterValidator import ParameterValidator
 from utilities.Writer import Writer
+
 
 class CSVFileWriter(Writer):
 

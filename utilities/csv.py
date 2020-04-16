@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
 
-import os
-import sys
 import argparse
 import datetime
+import os
+import sys
 from argparse import ArgumentParser
-
-from typing import TextIO, Set, Dict, Union
+from typing import Dict, Set, TextIO, Union
 
 # Static variables
 CONSOLE_PREFIX:str = "$ "

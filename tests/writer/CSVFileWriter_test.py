@@ -1,10 +1,13 @@
-from writer.CSVFileWriter import CSVFileWriter
-from utilities.Line import Line
+import hashlib
+import pathlib
 from datetime import datetime
-import pathlib, hashlib
-from pytest import raises
 from io import StringIO
+
 import pytest
+from pytest import raises
+
+from utilities.Line import Line
+from writer.CSVFileWriter import CSVFileWriter
 
 
 @pytest.fixture
