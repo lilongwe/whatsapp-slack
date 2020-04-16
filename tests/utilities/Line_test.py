@@ -1,6 +1,10 @@
-from reader.Line import Line
-from pytest import raises
 from datetime import datetime
+
+import pytest
+from pytest import raises
+
+from utilities.Line import Line
+
 
 def test_createLine():
 
@@ -28,6 +32,15 @@ def test_createNoneLine():
 	assert line.getUsername() == None
 	assert line.hasContent() == False
 
+def test_createLineWithNoParameters():
+
+	line:Line = Line()
+
+	assert line.getDate() == None
+	assert line.getContent() == None
+	assert line.getUsername() == None
+	assert line.hasContent() == False
+
 def test_createLineWithWrongTypes():
 
 	username:int = 10
@@ -41,35 +54,22 @@ def test_createLineWithWrongTypes():
 	assert line.getUsername() == None
 	assert line.hasContent() == False
 
-def test_anyNoneParameterHasNoContent():
 
-	username:str = "username"
-	content:str = "content"
-	date:datetime = datetime.now()
+@pytest.mark.parametrize("date,username,content", 
+							[(None, "username", "content"), 
+							(datetime.now(), None, "content"), 
+							(datetime.now(), "username" , None)])
+def test_anyNoneParameterHasNoContent(date, username, content):
 
-	line:Line = Line(None, username, content)
+	line:Line = Line(date, username, content)
 	assert line.hasContent() == False
 
-	line:Line = Line(date, None, content)
-	assert line.hasContent() == False
+@pytest.mark.parametrize("date,username,content", 
+							[(datetime.now(), "", "content"), 
+							(datetime.now(), "     ", "content"), 
+							(datetime.now(), "username" , ""),
+							(datetime.now(), "username" , "\r\t   \n")])
+def test_emptyStrings(date, username, content):
 
-	line:Line = Line(date, username, None)
-	assert line.hasContent() == False
-
-def test_emptyStrings():
-
-	username:str = "username"
-	content:str = "content"
-	date:datetime = datetime.now()
-
-	line:Line = Line(date, "", content)
-	assert line.hasContent() == False
-
-	line:Line = Line(date, "   ", content)
-	assert line.hasContent() == False
-
-	line:Line = Line(date, username, "")
-	assert line.hasContent() == False
-
-	line:Line = Line(date, username, "\r\t   \n")
+	line:Line = Line(date, username, content)
 	assert line.hasContent() == False

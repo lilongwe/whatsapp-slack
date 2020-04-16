@@ -1,26 +1,39 @@
-from reader.WhatsAppFileReader import WhatsAppFileReader
-from reader.Line import Line
-import pathlib, hashlib
-from pytest import raises
+import hashlib
+import pathlib
 from datetime import datetime
+from io import StringIO
 
-def test_checkCreateFileReaderWithObject():
+import pytest
+from pytest import raises
 
-	path = str(pathlib.Path(__file__).parent.absolute())
-	
-	input_file = open(path + "/whatsapp.txt", "rb")
+from reader.WhatsAppFileReader import WhatsAppFileReader
+from utilities.Line import Line
+from writer.CSVFileWriter import CSVFileWriter
 
-	fileReader:WhatsAppFileReader = WhatsAppFileReader(input_file)
 
-	assert fileReader.file() == input_file, "files are not equal"
+@pytest.fixture
+def absolute_path():
+	return str(pathlib.Path(__file__).parent.absolute())
 
-def test_checkCreateFileReaderWithString():
+@pytest.fixture
+def whatsapp_file_path(absolute_path):
+	return absolute_path + "/whatsapp.txt"
 
-	path = str(pathlib.Path(__file__).parent.absolute()) + "/whatsapp.txt"
+@pytest.fixture
+def whatsapp_file(whatsapp_file_path):
+	return open(whatsapp_file_path, "rb")
 
-	fileReader:WhatsAppFileReader = WhatsAppFileReader(path)
+def test_checkCreateFileReaderWithObject(whatsapp_file):
 
-	input_file = open(path, "rb")
+	fileReader:Reader = WhatsAppFileReader(whatsapp_file)
+
+	assert fileReader.file() == whatsapp_file, "files are not equal"
+
+def test_checkCreateFileReaderWithString(whatsapp_file_path):
+
+	fileReader:Reader = WhatsAppFileReader(whatsapp_file_path)
+
+	input_file = open(whatsapp_file_path, "rb")
 
 	hash_reader = hashlib.md5()
 	hash_reader.update(fileReader.file().read())
@@ -35,18 +48,16 @@ def test_checkCreateFileReaderWithString():
 def test_checkParameterException():
 
 	with raises(TypeError):
-		fileReader:WhatsAppFileReader = WhatsAppFileReader(1)
+		fileReader:Reader = WhatsAppFileReader(1)
 
 def test_checkFileNotFoundException():
 
 	with raises(FileNotFoundError):
-		fileReader:WhatsAppFileReader = WhatsAppFileReader("")
+		fileReader:Reader = WhatsAppFileReader("")
 
-def test_readLine():
+def test_readLine(whatsapp_file_path):
 
-	path = str(pathlib.Path(__file__).parent.absolute()) + "/whatsapp.txt"
-
-	fileReader:WhatsAppFileReader = WhatsAppFileReader(path)
+	fileReader:Reader = WhatsAppFileReader(whatsapp_file_path)
 
 	line:Line = fileReader.read()
 
@@ -63,11 +74,9 @@ def test_readLine():
 
 	assert 19 == count
 
-def test_checkTypesAndCountOfKeys():
+def test_checkTypesAndCountOfKeys(whatsapp_file_path):
 
-	path = str(pathlib.Path(__file__).parent.absolute()) + "/whatsapp.txt"
-
-	fileReader:WhatsAppFileReader = WhatsAppFileReader(path)
+	fileReader:Reader = WhatsAppFileReader(whatsapp_file_path)
 
 	line:Line = fileReader.read()
 
@@ -75,11 +84,9 @@ def test_checkTypesAndCountOfKeys():
 	assert type(line.getDate()) == datetime
 	assert type(line.getUsername()) == str
 	
-def test_outputValues():
+def test_outputValues(whatsapp_file_path):
 
-	path = str(pathlib.Path(__file__).parent.absolute()) + "/whatsapp.txt"
-
-	fileReader:WhatsAppFileReader = WhatsAppFileReader(path)
+	fileReader:Reader = WhatsAppFileReader(whatsapp_file_path)
 
 	line:Line = None
 
@@ -90,10 +97,9 @@ def test_outputValues():
 	assert line.getUsername() == "Elena Rosa Brunet"
 	assert line.getDate().strftime(fileReader.DATE_FORMAT) == "[26/03/2020, 10:47:47]"
 
-def test_multilineContent():
-	path = str(pathlib.Path(__file__).parent.absolute()) + "/whatsapp.txt"
+def test_multilineContent(whatsapp_file_path):
 
-	fileReader:WhatsAppFileReader = WhatsAppFileReader(path)
+	fileReader:Reader = WhatsAppFileReader(whatsapp_file_path)
 
 	line:Line = None
 
@@ -101,3 +107,25 @@ def test_multilineContent():
 		line = fileReader.read()
 
 	assert line.getContent().count("\n") == 3
+
+def test_processWithContent(absolute_path, whatsapp_file_path):
+	
+	csvFile = open(absolute_path + "/../utilities/slack_original.csv", "r")
+
+	fileReader:Reader = WhatsAppFileReader(whatsapp_file_path)
+	
+	contents:StringIO = StringIO()
+
+	fileWriter:Writer = CSVFileWriter(contents, channel="test-channel", delimiter="|")
+
+	fileReader.process(fileWriter)
+
+	hash_reader = hashlib.md5()
+	hash_reader.update(csvFile.read().encode("utf-8"))
+	existing_file_hash = hash_reader.hexdigest()
+
+	hash_reader = hashlib.md5()
+	hash_reader.update(contents.getvalue().encode("utf-8"))
+	output_file_hash = hash_reader.hexdigest()
+
+	assert existing_file_hash == output_file_hash

@@ -1,5 +1,7 @@
-from utilities.csv import generateFile, closeFiles
-import pathlib, hashlib
+import hashlib
+import pathlib
+
+from utilities.csv import closeFiles, generateFile
 
 
 def test_generateFile():
