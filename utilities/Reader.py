@@ -16,5 +16,5 @@ class Reader(abc.ABC):
 		pass
 	
 	@abc.abstractmethod
-	def process(self, writer:Writer):
+	def process(self, writer: Writer):
 		pass

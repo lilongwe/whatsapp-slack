@@ -15,9 +15,11 @@ from writer.CSVFileWriter import CSVFileWriter
 def absolute_path():
 	return str(pathlib.Path(__file__).parent.absolute())
 
+
 @pytest.fixture
 def whatsapp_file_path(absolute_path):
 	return absolute_path + "/whatsapp.txt"
+
 
 @pytest.fixture
 def whatsapp_file(whatsapp_file_path):
@@ -25,13 +27,13 @@ def whatsapp_file(whatsapp_file_path):
 
 def test_checkCreateFileReaderWithObject(whatsapp_file):
 
-	fileReader:Reader = WhatsAppFileReader(whatsapp_file)
+	fileReader: Reader = WhatsAppFileReader(whatsapp_file)
 
 	assert fileReader.file() == whatsapp_file, "files are not equal"
 
 def test_checkCreateFileReaderWithString(whatsapp_file_path):
 
-	fileReader:Reader = WhatsAppFileReader(whatsapp_file_path)
+	fileReader: Reader = WhatsAppFileReader(whatsapp_file_path)
 
 	input_file = open(whatsapp_file_path, "rb")
 
@@ -48,18 +50,18 @@ def test_checkCreateFileReaderWithString(whatsapp_file_path):
 def test_checkParameterException():
 
 	with raises(TypeError):
-		fileReader:Reader = WhatsAppFileReader(1)
+		fileReader: Reader = WhatsAppFileReader(1)
 
 def test_checkFileNotFoundException():
 
 	with raises(FileNotFoundError):
-		fileReader:Reader = WhatsAppFileReader("")
+		fileReader: Reader = WhatsAppFileReader("")
 
 def test_readLine(whatsapp_file_path):
 
-	fileReader:Reader = WhatsAppFileReader(whatsapp_file_path)
+	fileReader: Reader = WhatsAppFileReader(whatsapp_file_path)
 
-	line:Line = fileReader.read()
+	line: Line = fileReader.read()
 
 	assert type(line) == Line
 
@@ -76,47 +78,54 @@ def test_readLine(whatsapp_file_path):
 
 def test_checkTypesAndCountOfKeys(whatsapp_file_path):
 
-	fileReader:Reader = WhatsAppFileReader(whatsapp_file_path)
+	fileReader: Reader = WhatsAppFileReader(whatsapp_file_path)
 
-	line:Line = fileReader.read()
+	line: Line = fileReader.read()
 
 	assert type(line.getContent()) == str
 	assert type(line.getDate()) == datetime
 	assert type(line.getUsername()) == str
-	
+
 def test_outputValues(whatsapp_file_path):
 
-	fileReader:Reader = WhatsAppFileReader(whatsapp_file_path)
+	fileReader: Reader = WhatsAppFileReader(whatsapp_file_path)
 
-	line:Line = None
+	line: Line = None
 
 	for i in range(4):
 		line = fileReader.read()
 
-	assert line.getContent() == "Not bad, I’m living the \"dream\" with a really handsome man"
+	assert line.getContent() == ("Not bad, I’m living the \"dream\" "
+								"with a really handsome man")
 	assert line.getUsername() == "Elena Rosa Brunet"
-	assert line.getDate().strftime(fileReader.DATE_FORMAT) == "[26/03/2020, 10:47:47]"
+	assert line.getDate().strftime(fileReader.DATE_FORMAT) == (	
+																"[26/03/2020,"
+																" 10:47:47]")
 
 def test_multilineContent(whatsapp_file_path):
 
-	fileReader:Reader = WhatsAppFileReader(whatsapp_file_path)
+	fileReader: Reader = WhatsAppFileReader(whatsapp_file_path)
 
-	line:Line = None
+	line: Line = None
 
 	for i in range(13):
 		line = fileReader.read()
 
 	assert line.getContent().count("\n") == 3
 
+
 def test_processWithContent(absolute_path, whatsapp_file_path):
 	
 	csvFile = open(absolute_path + "/../utilities/slack_original.csv", "r")
 
-	fileReader:Reader = WhatsAppFileReader(whatsapp_file_path)
+	fileReader: Reader = WhatsAppFileReader(whatsapp_file_path)
 	
-	contents:StringIO = StringIO()
+	contents: StringIO = StringIO()
 
-	fileWriter:Writer = CSVFileWriter(contents, channel="test-channel", delimiter="|")
+	fileWriter: Writer = CSVFileWriter(
+		contents, 
+		channel="test-channel", 
+		delimiter="|")
 
 	fileReader.process(fileWriter)
 

@@ -14,6 +14,7 @@ from writer.CSVFileWriter import CSVFileWriter
 def absolute_path():
 	return str(pathlib.Path(__file__).parent.absolute())
 
+
 @pytest.fixture
 def fixture_csv_file(absolute_path):
 	return open(absolute_path + "/slack_test_fixture.csv", "rb")
@@ -22,7 +23,12 @@ def test_createFileWriter(fixture_csv_file):
 
 	output_file = StringIO()
 
-	fileWriter:CSVFileWriter = CSVFileWriter(output_file, delimiter="!", channel="test", overrideUsername="True")
+	fileWriter: CSVFileWriter = CSVFileWriter(
+												output_file, 
+												delimiter="!", 
+												channel="test", 
+												overrideUsername="True", 
+												validator="None")
 
 	fileWriter.write(Line(datetime(2019, 4, 13), "username", "content"))
 
@@ -36,12 +42,19 @@ def test_createFileWriter(fixture_csv_file):
 
 	assert output_hash == fixture_hash
 
-@pytest.mark.xfail(raises=OSError,reason="Uses input which cannot be used when pytest is capturing output")
+
+@pytest.mark.xfail(
+	raises=OSError, 
+	reason="Uses input which cannot be used when pytest is capturing output")
 def test_createFileWriterOverrideUsername(fixture_csv_file):
 
 	output_file = StringIO()
 
-	fileWriter:CSVFileWriter = CSVFileWriter(output_file, delimiter="!", channel="test", overrideUsername=True)
+	fileWriter: CSVFileWriter = CSVFileWriter(
+		output_file, 
+		delimiter="!", 
+		channel="test", 
+		overrideUsername=True)
 
 	fileWriter.write(Line(datetime(2019, 4, 13), "username", "content"))
 
@@ -60,7 +73,7 @@ def test_createFileWriterDefaults():
 	output_file = StringIO()
 	fixture_value = '1555110000, "whatsapp", "@username", "content"\n'
 
-	fileWriter:CSVFileWriter = CSVFileWriter(output_file)
+	fileWriter: CSVFileWriter = CSVFileWriter(output_file)
 
 	fileWriter.write(Line(datetime(2019, 4, 13), "username", "content"))
 
@@ -73,4 +86,4 @@ def test_fileNotInWriteMode(fixture_csv_file):
 	output_file = open(fixture_csv_file.name, "r")
 
 	with raises(IOError):
-		fileWriter:CSVFileWriter = CSVFileWriter(output_file)
+		fileWriter: CSVFileWriter = CSVFileWriter(output_file)

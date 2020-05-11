@@ -11,39 +11,36 @@ from utilities.Writer import Writer
 
 class WhatsAppFileReader(Reader):
 
-	CONSOLE_PREFIX:str = "$ "
-	FORMAT_STRING:str = '{1}{0} "{2}"{0} "@{3}"{0} "{4}"'
-	DATE_FORMAT:str = "[%d/%m/%Y, %H:%M:%S]"
+	CONSOLE_PREFIX: str = "$ "
+	FORMAT_STRING: str = '{1}{0} "{2}"{0} "@{3}"{0} "{4}"'
+	DATE_FORMAT: str = "[%d/%m/%Y, %H:%M:%S]"
 	LINE_DATE_INDEX = 22
 	LINE_USERNAME_INDEX = 23
 
-	CONTENT:str = "content"
-	DATE:str = "date"
-	USERNAME:str = "username"
+	CONTENT: str = "content"
+	DATE: str = "date"
+	USERNAME: str = "username"
 
-	
-	def __init__(self, fileHandle:Union[BufferedReader,str]):
+	def __init__(self, fileHandle: Union[BufferedReader, str]):
 
 		try:
 			if isinstance(fileHandle, BufferedReader):
 				if (fileHandle.mode.count("b")) == 0:
 					raise FileNotFoundError("File needs to be in binary read mode")
-				self._file:BufferedReader = fileHandle
+				self._file: BufferedReader = fileHandle
 			elif isinstance(fileHandle, str):
-				self._file:BufferedReader = open(fileHandle, "rb")
+				self._file: BufferedReader = open(fileHandle, "rb")
 			else:
 				raise TypeError("Only type <File> or <string> are allowed")
 		except TypeError as error:
 			raise error
 
-
 	def file(self) -> BufferedReader:
 		return self._file
 
-
 	def read(self) -> Line:
 		
-		output_elements:Dict[str,Union[str,datetime]] = {}
+		output_elements: Dict[str, Union[str, datetime]] = {}
 		readNext = True
 
 		while readNext:
@@ -59,7 +56,10 @@ class WhatsAppFileReader(Reader):
 			else:
 				if output_elements.get("content", None) is not None:
 					self._file.seek(0 - len(orig_line), os.SEEK_CUR)
-					return Line(output_elements[self.DATE], output_elements[self.USERNAME], output_elements[self.CONTENT])
+					return Line(
+								output_elements[self.DATE], 
+								output_elements[self.USERNAME], 
+								output_elements[self.CONTENT])
 
 				# We can find a date at start of line, it's a new line
 				line = line.strip()
@@ -68,16 +68,23 @@ class WhatsAppFileReader(Reader):
 				output_elements[self.DATE] = dt
 
 				output_elements[self.USERNAME] = self._getUsername(line)
-				output_elements[self.CONTENT] = self._getContents(line, output_elements["username"])
+				output_elements[self.CONTENT] = self._getContents(
+																	line, 
+																	output_elements["username"])
 		
-		new_line:Line = Line(output_elements[self.DATE], output_elements[self.USERNAME], output_elements[self.CONTENT]) if bool(output_elements) else Line()
+		if bool(output_elements):
+			new_line: Line = Line(output_elements[
+													self.DATE], 
+													output_elements[self.USERNAME], 
+													output_elements[self.CONTENT])
+		else:
+			new_line: Line = Line()
 
 		return new_line
 
+	def process(self, writer: Writer):
 
-	def process(self, writer:Writer):
-
-		line:Line = self.read()
+		line: Line = self.read()
 
 		while True:
 			writer.write(line)
@@ -87,22 +94,19 @@ class WhatsAppFileReader(Reader):
 			if line.hasContent() is False:
 				break
 
-
-	def _getDate(self, line:str, format:str = DATE_FORMAT) -> datetime:
+	def _getDate(self, line: str, format: str = DATE_FORMAT) -> datetime:
 		return datetime.strptime(line[:self.LINE_DATE_INDEX], format)
 
-
-	def _normaliseQuotes(self, line:str) -> str:
+	def _normaliseQuotes(self, line: str) -> str:
 		# Make sure to change all double quotes to standard ones
 		for quote in ['"', '‟', '″', '˝', '“']:
 			line = line.replace(quote, '\"')
 
 		return line
 
-
-	def _getUsername(self, line:str) -> str:
+	def _getUsername(self, line: str) -> str:
 		
-		username:str = None
+		username: str = None
 		
 		if line[self.LINE_USERNAME_INDEX:].count(':') > 0: 
 			username = line[self.LINE_USERNAME_INDEX:].split(':')[0].strip()
@@ -112,9 +116,8 @@ class WhatsAppFileReader(Reader):
 
 		return username
 
-
-	def _getContents(self, line:str, username:str) -> str:
+	def _getContents(self, line: str, username: str) -> str:
 		
-		content:str - None
+		content: str - None
 
 		return line[self.LINE_USERNAME_INDEX:].replace(username+":", "").strip()
