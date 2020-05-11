@@ -8,5 +8,7 @@
 	"python.pythonPath": "/usr/local/opt/python/bin/python3.7",
 	"cSpell.words": [
 		"rfdfdsf"
-	]
+	],
+	"python.linting.pycodestyleEnabled": true,
+	"python.linting.enabled": true
 }
