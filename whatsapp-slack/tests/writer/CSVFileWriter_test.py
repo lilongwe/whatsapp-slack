@@ -6,8 +6,8 @@ from io import StringIO
 import pytest
 from pytest import raises
 
-from utilities.Line import Line
-from writer.CSVFileWriter import CSVFileWriter
+from whatsapp_slack.Line import Line
+from whatsapp_slack.writer.CSVFileWriter import CSVFileWriter
 
 
 @pytest.fixture

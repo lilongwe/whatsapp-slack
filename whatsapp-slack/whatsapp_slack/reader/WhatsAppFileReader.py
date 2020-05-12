@@ -4,9 +4,9 @@ from datetime import datetime
 from io import BufferedReader
 from typing import Dict, Union
 
-from utilities.Line import Line
-from utilities.Reader import Reader
-from utilities.Writer import Writer
+from whatsapp_slack.Line import Line
+from whatsapp_slack.reader.Reader import Reader
+from whatsapp_slack.writer.Writer import Writer
 
 
 class WhatsAppFileReader(Reader):
@@ -54,7 +54,7 @@ class WhatsAppFileReader(Reader):
 				if readNext:
 					output_elements[self.CONTENT] += "\n"+line.strip()
 			else:
-				if output_elements.get("content", None) is not None:
+				if output_elements.get(self.CONTENT, None) is not None:
 					self._file.seek(0 - len(orig_line), os.SEEK_CUR)
 					return Line(
 								output_elements[self.DATE], 
@@ -70,7 +70,7 @@ class WhatsAppFileReader(Reader):
 				output_elements[self.USERNAME] = self._getUsername(line)
 				output_elements[self.CONTENT] = self._getContents(
 																	line, 
-																	output_elements["username"])
+																	output_elements[self.USERNAME])
 		
 		if bool(output_elements):
 			new_line: Line = Line(output_elements[

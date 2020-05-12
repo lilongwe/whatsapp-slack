@@ -2,9 +2,9 @@ from datetime import datetime
 from io import IOBase, StringIO, TextIOWrapper
 from typing import Dict, Union
 
-from utilities.Line import Line
-from utilities.ParameterValidator import ParameterValidator
-from utilities.Writer import Writer
+from whatsapp_slack.Line import Line
+from whatsapp_slack.ParameterValidator import ParameterValidator
+from whatsapp_slack.writer.Writer import Writer
 
 
 class CSVFileWriter(Writer):

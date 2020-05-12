@@ -1,6 +1,6 @@
 import pytest
 
-from utilities.ParameterValidator import ParameterValidator
+from whatsapp_slack.ParameterValidator import ParameterValidator
 
 
 @pytest.mark.parametrize("parameter", ["string", "\n string \r"])

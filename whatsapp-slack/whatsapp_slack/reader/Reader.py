@@ -1,8 +1,8 @@
 import abc
 from io import BufferedReader
 
-from utilities.Line import Line
-from utilities.Writer import Writer
+from whatsapp_slack.Line import Line
+from whatsapp_slack.writer.Writer import Writer
 
 
 class Reader(abc.ABC):
