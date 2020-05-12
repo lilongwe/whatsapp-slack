@@ -36,6 +36,10 @@ develop:
 	@echo Installing as DEVELOP for Python 3
 	python3 setup.py develop
 
+uninstall:
+	@echo Uninstalling for Python 3
+	python3 setup.py develop --uninstall
+
 dist:
 	@echo Creating distribution for Python 3
 	python3 setup.py sdist
