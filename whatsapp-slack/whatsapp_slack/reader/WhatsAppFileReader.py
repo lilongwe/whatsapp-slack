@@ -4,9 +4,9 @@ from datetime import datetime
 from io import BufferedReader
 from typing import Dict, Union
 
-from utilities.Line import Line
-from utilities.Reader import Reader
-from utilities.Writer import Writer
+from whatsapp_slack.Line import Line
+from whatsapp_slack.reader.Reader import Reader
+from whatsapp_slack.writer.Writer import Writer
 
 
 class WhatsAppFileReader(Reader):

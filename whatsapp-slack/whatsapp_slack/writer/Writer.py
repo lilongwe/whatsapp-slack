@@ -1,6 +1,6 @@
 import abc
 
-from utilities.Line import Line
+from whatsapp_slack.Line import Line
 
 
 class Writer(abc.ABC):

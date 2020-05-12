@@ -3,7 +3,7 @@ from datetime import datetime
 import pytest
 from pytest import raises
 
-from utilities.Line import Line
+from whatsapp_slack.Line import Line
 
 
 def test_createLine():
