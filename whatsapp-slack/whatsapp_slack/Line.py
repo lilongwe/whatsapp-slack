@@ -45,3 +45,6 @@ class Line(object):
 				self._content is not None 
 				and self._date is not None
 				and self._username is not None)
+
+	def __str__(self):
+		return '<Line> Date: {self._date} , Content: {self._content}, Username: {self._username}'.format(self=self)

@@ -89,3 +89,11 @@ class CSVFileWriter(Writer):
 				usernames_mappings[username] = username
 		
 		return usernames_mappings.get(username, None)
+
+	def __str__(self):
+		return (
+				"<CSVFileWriter> File: {self._file}, "
+				"OverrideUsername:  {self._overrideUsername}, "
+				"Channel: {self._channel}, "
+				"Validator: {self._validator}, "
+				"Delimiter: {self._delimiter}".format(self=self))

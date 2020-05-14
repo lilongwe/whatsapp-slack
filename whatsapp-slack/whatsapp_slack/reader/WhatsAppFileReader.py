@@ -121,3 +121,7 @@ class WhatsAppFileReader(Reader):
 		content: str - None
 
 		return line[self.LINE_USERNAME_INDEX:].replace(username+":", "").strip()
+
+	def __str__(self):
+		return (
+				"<WhatsAppFileReader> File: {self._file}".format(self=self))
