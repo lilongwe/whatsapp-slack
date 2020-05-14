@@ -125,6 +125,5 @@ class WhatsAppFileReader(Reader):
 
 		return line[self.LINE_USERNAME_INDEX:].replace(username+":", "").strip()
 
-	def __str__(self):
-		return (
-				"<WhatsAppFileReader> File: {self._file}".format(self=self))
+	def __repr__(self):
+		return (f"{self.__class__.__name__}({self._file!r})")
