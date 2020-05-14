@@ -50,6 +50,9 @@ class CSVFileWriter(Writer):
 
 		self._usernames_mappings: Dict[str, str] = {}
 
+	def close(self):
+		self._file.close()
+
 	def setOverrideUsername(self, override: bool):
 		self._overrideUsername = bool(override)
 

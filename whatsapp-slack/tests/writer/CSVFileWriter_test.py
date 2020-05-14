@@ -81,6 +81,24 @@ def test_createFileWriterDefaults():
 
 	assert output_value == fixture_value
 
+def test_close():
+
+	output_file = StringIO()
+	fixture_value = '1555110000, "whatsapp", "@username", "content"\n'
+
+	fileWriter: CSVFileWriter = CSVFileWriter(output_file)
+
+	fileWriter.write(Line(datetime(2019, 4, 13), "username", "content"))
+
+	output_value = output_file.getvalue()
+
+	assert output_value is not None
+
+	fileWriter.close()
+
+	with raises(ValueError):
+		fileWriter.write(Line(datetime(2019, 4, 13), "username", "content"))
+
 def test_fileNotInWriteMode(fixture_csv_file):
 
 	output_file = open(fixture_csv_file.name, "r")

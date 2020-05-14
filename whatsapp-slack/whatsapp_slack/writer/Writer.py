@@ -12,3 +12,7 @@ class Writer(abc.ABC):
 	@abc.abstractmethod
 	def setOverrideUsername(self, override: bool):
 		pass
+	
+	@abc.abstractmethod
+	def close(self):
+		pass

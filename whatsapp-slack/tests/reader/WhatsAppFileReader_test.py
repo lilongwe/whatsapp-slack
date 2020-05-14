@@ -86,6 +86,19 @@ def test_checkTypesAndCountOfKeys(whatsapp_file_path):
 	assert type(line.getDate()) == datetime
 	assert type(line.getUsername()) == str
 
+def test_close(whatsapp_file_path):
+
+	fileReader: Reader = WhatsAppFileReader(whatsapp_file_path)
+
+	line: Line = fileReader.read()
+
+	assert line is not None
+
+	fileReader.close()
+
+	with raises(ValueError):
+		line = fileReader.read()
+
 def test_outputValues(whatsapp_file_path):
 
 	fileReader: Reader = WhatsAppFileReader(whatsapp_file_path)

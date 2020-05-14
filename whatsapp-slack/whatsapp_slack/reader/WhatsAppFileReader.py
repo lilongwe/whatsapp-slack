@@ -35,6 +35,9 @@ class WhatsAppFileReader(Reader):
 		except TypeError as error:
 			raise error
 
+	def close(self):
+		self._file.close()
+
 	def file(self) -> BufferedReader:
 		return self._file
 
