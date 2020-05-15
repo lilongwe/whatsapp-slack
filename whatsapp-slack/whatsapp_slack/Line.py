@@ -1,6 +1,8 @@
 from datetime import datetime
 
-class Line(object):
+from whatsapp_slack.Base import Base
+
+class Line(Base):
 
 	def __init__(
 					self, 

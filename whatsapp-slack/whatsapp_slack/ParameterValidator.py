@@ -1,5 +1,6 @@
+from whatsapp_slack.Base import Base
 
-class ParameterValidator(object):
+class ParameterValidator(Base):
 
 	def validateString(self, string: str, default: str = None) -> str:		
 
