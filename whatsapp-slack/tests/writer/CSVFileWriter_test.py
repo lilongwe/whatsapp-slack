@@ -92,7 +92,7 @@ def test_close():
 
 	output_value = output_file.getvalue()
 
-	assert output_value is not None
+	assert output_value == fixture_value
 
 	fileWriter.close()
 
