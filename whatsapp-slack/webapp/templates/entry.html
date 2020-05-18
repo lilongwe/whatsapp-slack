@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block body %}
+
+<h2>{{ the_title }}</h2>
+
+<form method="POST" action="/process"  enctype="multipart/form-data">
+	<p>Use this form to submit your WhatsApp text:</p>
+	<table>	
+		<tr>
+			<td>Delimiter:</td>
+			<td><input name="delimiter" type="text" value="{{ the_delimiter }}"></td>
+		</tr>
+		<tr>
+			<td>Channel:</td>
+			<td><input name="channel" type="text" value="{{ the_channel }}"></td>
+		</tr>
+		<tr>
+			<td>WhatsApp Text:</td>
+			<td>
+				<textarea name="whatsapp_text" width="200"></textarea>
+			</td>
+		</tr>
+		<tr>
+			<td>Upload File:</td>
+			<td><input name="whatsapp_file" type="file"></td>
+		</tr>
+	</table>
+	<p>When you"re ready, click this button:</p>
+	<p><input value="Do it!" type="SUBMIT"></p>
+</form>
+
+{% endblock %}

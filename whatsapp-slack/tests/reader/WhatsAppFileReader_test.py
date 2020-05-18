@@ -1,7 +1,8 @@
 import hashlib
 import pathlib
 from datetime import datetime
-from io import StringIO
+from io import StringIO, BytesIO
+from tempfile import SpooledTemporaryFile, TemporaryFile
 
 import pytest
 from pytest import raises
@@ -9,6 +10,8 @@ from pytest import raises
 from whatsapp_slack.reader.WhatsAppFileReader import WhatsAppFileReader
 from whatsapp_slack.Line import Line
 from whatsapp_slack.writer.CSVFileWriter import CSVFileWriter
+
+import inspect
 
 
 @pytest.fixture
@@ -30,6 +33,25 @@ def test_checkCreateFileReaderWithObject(whatsapp_file):
 	fileReader: Reader = WhatsAppFileReader(whatsapp_file)
 
 	assert fileReader.file() == whatsapp_file, "files are not equal"
+
+def test_checkBinaryMode():
+
+	temp = SpooledTemporaryFile(mode="w")
+
+	with raises(Exception) as e:
+		fileReader: Reader = WhatsAppFileReader(temp)
+
+	assert WhatsAppFileReader.READ_MODE_EXCEPTION in str(e.value)
+
+def test_checkSpooledTemporaryFile():
+
+	temp = SpooledTemporaryFile()
+	fileReader: Reader = WhatsAppFileReader(temp)
+
+def test_checkBytesIO():
+
+	temp = BytesIO()
+	fileReader: Reader = WhatsAppFileReader(temp)
 
 def test_checkCreateFileReaderWithString(whatsapp_file_path):
 

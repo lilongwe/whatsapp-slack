@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+<h2>{{ the_title }}</h2>
+
+<p>You submitted the following text:</p>
+
+<form method="POST" action="/process"  enctype="multipart/form-data">
+	<table>
+		<tr>
+			<td>Delimiter:</td>
+			<td><input name="delimiter" type="text" value="{{ the_delimiter }}"></td>
+		</tr>
+		<tr>
+			<td>Channel:</td>
+			<td><input name="channel" type="text" value="{{ the_channel }}"></td>
+		</tr>
+		<tr>
+			<td>Original Text:</td>
+			<td><textarea name="whatsapp_text" width="200">{{ original_file }}</textarea></td>
+		</tr>
+		<tr>
+			<td>Slack Text:</td>
+			<td><textarea name="slack_file" width="200">{{ slack_file }}</textarea></td>
+		</tr>
+	</table>
+	<p>
+		<button><a href="/">Back</a></button>
+		<input value="Update" type="submit">
+	</p>
+</form>
+
+{% endblock %}

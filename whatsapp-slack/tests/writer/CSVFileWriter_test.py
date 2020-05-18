@@ -1,7 +1,7 @@
 import hashlib
 import pathlib
 from datetime import datetime
-from io import StringIO
+from io import StringIO, BytesIO
 
 import pytest
 from pytest import raises
@@ -41,6 +41,15 @@ def test_createFileWriter(fixture_csv_file):
 	fixture_hash = hash_reader.hexdigest()
 
 	assert output_hash == fixture_hash
+
+def test_checkTypeError():
+
+	fileWriter1: CSVFileWriter = CSVFileWriter(StringIO())
+	
+	with raises(TypeError) as e:
+		fileWriter2: CSVFileWriter = CSVFileWriter(BytesIO())
+
+	assert CSVFileWriter.TYPE_ERROR_EXCEPTION in str(e.value)
 
 
 @pytest.mark.xfail(
