@@ -30,5 +30,8 @@
 		<input value="Update" type="submit">
 	</p>
 </form>
-
+<form method="POST" action="/download"  enctype="multipart/form-data">
+	<textarea name="slack_file" hidden>{{ slack_file }}</textarea>
+	<input value="Download" type="submit">
+</form>
 {% endblock %}

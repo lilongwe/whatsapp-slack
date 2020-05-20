@@ -1,6 +1,6 @@
 from io import StringIO, BytesIO
 
-from flask import Flask, render_template, request, flash
+from flask import Flask, render_template, request, flash, Response
 from werkzeug.datastructures import FileStorage
 
 from whatsapp_slack.reader.WhatsAppFileReader import WhatsAppFileReader
@@ -18,6 +18,20 @@ def hello() -> "html":
 				the_title="Welcome to whatsapp_slack on the web!",
 				the_delimiter=CSVFileWriter.DEFAULT_DELIMITER,
 				the_channel=CSVFileWriter.DEFAULT_CHANNEL_NAME)
+
+
+@app.route("/download", methods=["GET", "POST"])
+def download() -> Response:
+
+	csv = '1,2,3\n4,5,6\n'
+	csvFile = request.form["slack_file"]
+
+	return Response(
+		csvFile,
+		mimetype="text/csv",
+		headers={
+				"Content-disposition":
+				"attachment; filename=slack.csv"})
 
 
 @app.route("/process", methods=["GET", "POST"])
