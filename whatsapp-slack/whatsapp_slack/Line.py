@@ -1,6 +1,8 @@
 from datetime import datetime
 
-class Line(object):
+from whatsapp_slack.Base import Base
+
+class Line(Base):
 
 	def __init__(
 					self, 
@@ -45,3 +47,8 @@ class Line(object):
 				self._content is not None 
 				and self._date is not None
 				and self._username is not None)
+
+	def __repr__(self):
+		return (
+				f"{self.__class__.__name__}("
+				f"{self._date!r}, {self._username!r}, {self._content!r})")

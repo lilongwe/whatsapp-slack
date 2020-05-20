@@ -11,6 +11,12 @@ class CSVFileWriter(Writer):
 
 	FORMAT_STRING: str = '{1}{0} "{2}"{0} "@{3}"{0} "{4}"'
 	CONSOLE_PREFIX: str = "$ "
+	DEFAULT_CHANNEL_NAME: str = "whatsapp"
+	DEFAULT_DELIMITER: str = ","
+
+	TYPE_ERROR_EXCEPTION = (
+							"Only type <File> or <string>"
+							" or <StringIO> are allowed")
 
 	def __init__(	
 					self, 
@@ -30,7 +36,7 @@ class CSVFileWriter(Writer):
 			elif isinstance(fileHandle, StringIO):
 				self._file: TextIOWrapper = fileHandle
 			else:
-				raise TypeError("Only type <File> or <string> or <StringIO> are allowed")
+				raise TypeError(self.TYPE_ERROR_EXCEPTION)
 		except TypeError as error:
 			raise error
 
@@ -39,9 +45,13 @@ class CSVFileWriter(Writer):
 		else:
 			self._validator = ParameterValidator()
 
-		self._channel = self._validator.validateString(channel, "whatsapp")
+		self._channel = self._validator.validateString(
+										channel, 
+										self.DEFAULT_CHANNEL_NAME)
 
-		self._delimiter = self._validator.validateString(delimiter, ",")
+		self._delimiter = self._validator.validateString(
+															delimiter, 
+															self.DEFAULT_DELIMITER)
 
 		if (overrideUsername is not None and type(overrideUsername) == bool):
 			self._overrideUsername = overrideUsername
@@ -49,6 +59,9 @@ class CSVFileWriter(Writer):
 			self._overrideUsername = False
 
 		self._usernames_mappings: Dict[str, str] = {}
+
+	def close(self):
+		self._file.close()
 
 	def setOverrideUsername(self, override: bool):
 		self._overrideUsername = bool(override)
@@ -89,3 +102,13 @@ class CSVFileWriter(Writer):
 				usernames_mappings[username] = username
 		
 		return usernames_mappings.get(username, None)
+
+	def self(self):
+		return self
+
+	def __repr__(self):
+		return (
+				f"{self.__class__.__name__}("
+				f"{self._file!r}, {self._channel!r}, "
+				f"{self._delimiter!r}, {self._overrideUsername!r}, "
+				f"{self._validator!r})")

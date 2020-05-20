@@ -1,7 +1,8 @@
 import os
 import pathlib
+from tempfile import SpooledTemporaryFile
 from datetime import datetime
-from io import BufferedReader
+from io import BufferedReader, BytesIO
 from typing import Dict, Union
 
 from whatsapp_slack.Line import Line
@@ -21,19 +22,33 @@ class WhatsAppFileReader(Reader):
 	DATE: str = "date"
 	USERNAME: str = "username"
 
+	READ_MODE_EXCEPTION = "File needs to be in binary read mode"
+	TYPE_ERROR_EXCEPTION = "Only type <File> or <string> are allowed"
+	NO_USERNAME_EXCEPTION = "No username found: "
+
 	def __init__(self, fileHandle: Union[BufferedReader, str]):
 
 		try:
-			if isinstance(fileHandle, BufferedReader):
-				if (fileHandle.mode.count("b")) == 0:
-					raise FileNotFoundError("File needs to be in binary read mode")
+			if (
+					isinstance(fileHandle, BufferedReader) 
+					or isinstance(fileHandle, SpooledTemporaryFile)
+					or isinstance(fileHandle, BytesIO)):
+
+				if (
+						(not isinstance(fileHandle, BytesIO)) 
+						and fileHandle.mode.count("b") == 0
+					):
+					raise Exception(self.READ_MODE_EXCEPTION)
 				self._file: BufferedReader = fileHandle
 			elif isinstance(fileHandle, str):
 				self._file: BufferedReader = open(fileHandle, "rb")
 			else:
-				raise TypeError("Only type <File> or <string> are allowed")
+				raise TypeError(self.TYPE_ERROR_EXCEPTION)
 		except TypeError as error:
 			raise error
+
+	def close(self):
+		self._file.close()
 
 	def file(self) -> BufferedReader:
 		return self._file
@@ -51,7 +66,7 @@ class WhatsAppFileReader(Reader):
 				dt = self._getDate(line.strip())
 			except ValueError:
 				readNext = len(orig_line) > 0
-				if readNext:
+				if readNext and self.CONTENT in output_elements:
 					output_elements[self.CONTENT] += "\n"+line.strip()
 			else:
 				if output_elements.get(self.CONTENT, None) is not None:
@@ -112,7 +127,7 @@ class WhatsAppFileReader(Reader):
 			username = line[self.LINE_USERNAME_INDEX:].split(':')[0].strip()
 
 		if username is None or len(username.strip()) == 0:
-			raise NameError("No username found")
+			raise Exception((self.NO_USERNAME_EXCEPTION, line))
 
 		return username
 
@@ -121,3 +136,6 @@ class WhatsAppFileReader(Reader):
 		content: str - None
 
 		return line[self.LINE_USERNAME_INDEX:].replace(username+":", "").strip()
+
+	def __repr__(self):
+		return (f"{self.__class__.__name__}({self._file!r})")

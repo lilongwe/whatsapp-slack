@@ -1,7 +1,7 @@
 import hashlib
 import pathlib
 from datetime import datetime
-from io import StringIO
+from io import StringIO, BytesIO
 
 import pytest
 from pytest import raises
@@ -42,6 +42,15 @@ def test_createFileWriter(fixture_csv_file):
 
 	assert output_hash == fixture_hash
 
+def test_checkTypeError():
+
+	fileWriter1: CSVFileWriter = CSVFileWriter(StringIO())
+	
+	with raises(TypeError) as e:
+		fileWriter2: CSVFileWriter = CSVFileWriter(BytesIO())
+
+	assert CSVFileWriter.TYPE_ERROR_EXCEPTION in str(e.value)
+
 
 @pytest.mark.xfail(
 	raises=OSError, 
@@ -80,6 +89,24 @@ def test_createFileWriterDefaults():
 	output_value = output_file.getvalue()
 
 	assert output_value == fixture_value
+
+def test_close():
+
+	output_file = StringIO()
+	fixture_value = '1555110000, "whatsapp", "@username", "content"\n'
+
+	fileWriter: CSVFileWriter = CSVFileWriter(output_file)
+
+	fileWriter.write(Line(datetime(2019, 4, 13), "username", "content"))
+
+	output_value = output_file.getvalue()
+
+	assert output_value == fixture_value
+
+	fileWriter.close()
+
+	with raises(ValueError):
+		fileWriter.write(Line(datetime(2019, 4, 13), "username", "content"))
 
 def test_fileNotInWriteMode(fixture_csv_file):
 
