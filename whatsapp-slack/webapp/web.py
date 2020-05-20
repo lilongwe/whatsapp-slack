@@ -23,7 +23,6 @@ def hello() -> "html":
 @app.route("/download", methods=["GET", "POST"])
 def download() -> Response:
 
-	csv = '1,2,3\n4,5,6\n'
 	csvFile = request.form["slack_file"]
 
 	return Response(
